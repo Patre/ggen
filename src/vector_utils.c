@@ -50,6 +50,8 @@ int vector_uniq_sorted(igraph_vector_t *v)
 	 * test each index against it.
 	 * It is that simple because the vector is sorted
 	 */
+	if(igraph_vector_size(v) == 0)
+		return 0;
 	pos = 0;
 	l = 1;
 	for(i = 1; i < igraph_vector_size(v); i++)
@@ -96,3 +98,7 @@ int vector_union(igraph_vector_t *to, igraph_vector_t *from)
 	igraph_vector_append(to,from);
 	return vector_uniq(to);
 }
+
+
+
+

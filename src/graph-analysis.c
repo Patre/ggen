@@ -198,6 +198,7 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 	if(err) return NULL;
 
 	err = ggen_transform_transitive_closure(&gstar);
+	
 	if(err) goto error;
 
 	/* Bipartite convertion : let G = (S,C),
@@ -303,7 +304,7 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 			if(VECTOR(todo)[i] < vg)
 			{
 				/* scan edges */
-				err = igraph_es_adj(&es,VECTOR(todo)[i],IGRAPH_OUT);
+				err = igraph_es_incident(&es,VECTOR(todo)[i],IGRAPH_OUT);
 				if(err) goto d_next;
 				err = igraph_eit_create(&b,es,&eit);
 				if(err)
@@ -333,7 +334,7 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 			else
 			{
 				/* scan edges */
-				err = igraph_es_adj(&es,VECTOR(todo)[i],IGRAPH_IN);
+				err = igraph_es_incident(&es,VECTOR(todo)[i],IGRAPH_IN);
 				if(err) goto d_next;
 				err = igraph_eit_create(&b,es,&eit);
 				if(err)
@@ -368,28 +369,34 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 		igraph_vector_append(&todo,&next);
 		igraph_vector_clear(&next);
 	} while(added);
-
-	err = igraph_vector_init_seq(&l,0,vg-1);
+	
+	/* compute L = U \setminus T */
+	err = igraph_vector_init_seq(&l,0,(igraph_real_t)(vg-1));
 	if(err) goto d_t;
-
+	
 	err = vector_diff(&l,&t);
 	if(err) goto d_l;
 
-	err = igraph_vector_update(&c,&l);
-	if(err) goto d_l;
-
+	/* compute R = V \inter T */
 	err = igraph_vector_init(&r,vg);
 	if(err) goto d_l;
 	igraph_vector_clear(&r);
-
-	/* compute V \inter T */
+	
 	for(i = 0; i < igraph_vector_size(&t); i++)
 	{
 		if(VECTOR(t)[i] >= vg)
 			igraph_vector_push_back(&r,VECTOR(t)[i]);
 	}
-
-	igraph_vector_add_constant(&r,(igraph_real_t)-vg);
+	
+	for(i = 0; i < igraph_vector_size(&r); i++)
+	{
+		igraph_vector_set(&r, i, VECTOR(r)[i]-vg);	
+	}
+	
+	/* compute C = L \union R */
+	err = igraph_vector_update(&c,&l);
+	if(err) goto d_l;
+	
 	err = vector_union(&c,&r);
 	if(err) goto d_r;
 
