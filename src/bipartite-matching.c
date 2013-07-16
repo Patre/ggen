@@ -93,10 +93,12 @@ static int bfs(igraph_t *g, igraph_vector_t *pair, igraph_vector_t *layer)
 					igraph_dqueue_push(&q,(igraph_real_t)j);
 				}
 			}
+			igraph_vit_destroy(&vit);
+			igraph_vs_destroy(&vs);
 		}
 	}
-	igraph_vit_destroy(&vit);
-	igraph_vs_destroy(&vs);
+	
+	igraph_dqueue_destroy(&q);
 
 	if(VECTOR(*layer)[vg] == (igraph_real_t)vg)
 		return 0;
@@ -129,6 +131,8 @@ static int dfs(igraph_t *g, unsigned long i, igraph_vector_t *pair, igraph_vecto
 				return 1;
 			}
 	}
+	igraph_vit_destroy(&vit);
+	igraph_vs_destroy(&vs);
 	VECTOR(*layer)[i] = (igraph_real_t)vg;
 	return 0;
 }
