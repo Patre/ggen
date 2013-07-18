@@ -1,0 +1,362 @@
+.TH GGEN 1 "" "GGen Command Line Client"
+.SH NAME
+.PP
+ggen \- command line interface to the ggen library.
+.SH SYNOPSIS
+.PP
+\f[C]ggen\f[] [\-\-version][\\\-\\\-help] \f[I]MODULE\f[]
+\f[I]COMMAND\f[] [\f[I]ARGS\f[]]
+.SH DESCRIPTION
+.PP
+GGen is a command\-line interface to the ggen graph generator library.
+It provides all the libggen functions as well as some trivial additional
+graph metrics.
+Graphs are manipuled as DOT files, see \f[C]dot(1)\f[] for more
+information.
+.PP
+GGen fonctionalities are encapsuled into \f[I]MODULES\f[], each of them
+providing a different part of the ggen library: generators, analysers
+and transformers of graph, as well as annotations analysis (generally
+called graph properties).
+.PP
+Inside a module, the \f[I]COMMAND\f[] is the name of the function you
+want to access.
+.SH OPTIONS
+.PP
+Some of the options described here are only available for specific
+commands.
+For example \f[C]\-\-input\f[] and \f[C]\-\-output\f[] only make sense
+for commands taking a graph as input/output.
+.IP \[bu] 2
+\f[C]\-h,\ \-\-help\f[]
+.RS 2
+.PP
+Display help message and exit.
+The help message is specialized if target module or function is
+specified.
+.RE
+.IP \[bu] 2
+\f[C]\-\-full\-help\f[]
+.RS 2
+.PP
+Display as much help as possible.
+.RE
+.IP \[bu] 2
+\f[C]\-v,\ \-\-version\f[]
+.RS 2
+.PP
+Output version information and exit.
+.RE
+.IP \[bu] 2
+\f[C]\-f,\ \-\-log\-file\f[] \f[I]file\f[]
+.RS 2
+.PP
+Write logging to \f[I]file\f[].
+.RE
+.IP \[bu] 2
+\f[C]\-l,\ \-\-log\-level\f[] \f[I]int\f[]
+.RS 2
+.PP
+Set logging verbosity.
+O is quiet (no output), 5 is maximum (debugging).
+.RE
+.IP \[bu] 2
+\f[C]\-i,\ \-\-input\f[] \f[I]file\f[]
+.RS 2
+.PP
+Read input from \f[I]file\f[] instead of standard input.
+.RE
+.IP \[bu] 2
+\f[C]\-o,\ \-\-output\f[] \f[I]file\f[]
+.RS 2
+.PP
+Write output to \f[I]file\f[] instead of standard output.
+.RE
+.IP \[bu] 2
+\f[C]\-r,\ \-\-rng\-file\f[] \f[I]file\f[]
+.RS 2
+.PP
+Read/Write Random Number Generator from/to \f[I]file\f[].
+If file does not exist, it will still be used to write the RNG at the
+end of computation.
+.RE
+.IP \[bu] 2
+\f[C]\-\-edge,\-\-vertex\f[]
+.RS 2
+.PP
+Manipulating edge or vertex properties.
+.RE
+.IP \[bu] 2
+\f[C]\-\-name\f[] \f[I]string\f[]
+.RS 2
+.PP
+Set to \f[I]string\f[] the name of the property.
+.RE
+.SH COMMANDS
+.PP
+Each module provides a different set of commands.
+.SS generate\-graph
+.PP
+You should read the \f[C]ggen(3)\f[] manual for a description of each
+generation method.
+By default the resulting graph is printed on standard output.
+.IP \[bu] 2
+\f[C]gnp\f[] \f[I]n:int\f[] \f[I]p:float\f[]
+.RS 2
+.PP
+Calls ggen_generate_erdos_gnp from libggen.
+.RE
+.IP \[bu] 2
+\f[C]gnm\f[] \f[I]n:int\f[] \f[I]m:int\f[]
+.RS 2
+.PP
+Calls ggen_generate_erdos_gnm from libggen.
+.RE
+.IP \[bu] 2
+\f[C]lbl\f[] \f[I]n:int\f[] \f[I]nbl:int\f[] \f[I]p:float\f[]
+.RS 2
+.PP
+Calls ggen_generate_erdos_lbl from libggen.
+.RE
+.IP \[bu] 2
+\f[C]fifo\f[] \f[I]n:int\f[] \f[I]od:int\f[] \f[I]id:int\f[]
+.RS 2
+.PP
+Calls ggen_generate_fifo from libggen.
+.RE
+.IP \[bu] 2
+\f[C]ro\f[] \f[I]n:int\f[] \f[I]orders:int\f[]
+.RS 2
+.PP
+Calls ggen_generate_random_orders from libggen.
+.RE
+.SS analyse\-graph
+.PP
+This module always requires a graph as input.
+.IP \[bu] 2
+\f[C]nb\-vertices\f[]
+.RS 2
+.PP
+Prints the number of vertices.
+.RE
+.IP \[bu] 2
+\f[C]nb\-edges\f[]
+.RS 2
+.PP
+Prints the number of edges.
+.RE
+.IP \[bu] 2
+\f[C]mst\f[]
+.RS 2
+.PP
+Prints the Minimum Spanning Tree (as a graph).
+.RE
+.IP \[bu] 2
+\f[C]lp\f[] Prints the Longest Path (as a list of nodes, in order).
+.IP \[bu] 2
+\f[C]out\-degree\f[]
+.RS 2
+.PP
+Prints the outdegree of each vertex.
+.RE
+.IP \[bu] 2
+\f[C]in\-degree\f[]
+.RS 2
+.PP
+Prints the indegree of each vertex.
+.RE
+.IP \[bu] 2
+\f[C]max\-independent\-set\f[]
+.RS 2
+.PP
+Prints a maximum independent set (as a list of nodes).
+.RE
+.IP \[bu] 2
+\f[C]strong\-components\f[]
+.RS 2
+.PP
+Prints the number of strong components.
+.RE
+.IP \[bu] 2
+\f[C]longest\-antichain\f[]
+.RS 2
+.PP
+Prints the longest antichain in the graph.
+.RE
+.IP \[bu] 2
+\f[C]lsa\f[]
+.RS 2
+.PP
+Prints the lowest single ancestor of each vertex.
+.RE
+.SS transform\-graph
+.PP
+This module requires a graph as input and will by default print the
+resulting graph on standard output.
+.IP \[bu] 2
+\f[C]remove\-sinks\f[]
+.RS 2
+.PP
+Removes all sinks.
+.RE
+.IP \[bu] 2
+\f[C]remove\-sources\f[]
+.RS 2
+.PP
+Removes all sources.
+.RE
+.IP \[bu] 2
+\f[C]add\-sink\f[]
+.RS 2
+.PP
+Adds a node connected to all previous sinks.
+.RE
+.IP \[bu] 2
+\f[C]add\-source\f[]
+.RS 2
+.PP
+Adds a node connected to all previous sources.
+.RE
+.SS add\-property
+.PP
+This module requires a graph as input and will by default print the
+resulting graph on standard output.
+.PP
+This module annotates the graph by adding on each vertex or edge a
+property randomly choosen using the given distribution.
+.IP \[bu] 2
+\f[C]gaussian\f[] \f[I]sigma:float\f[]
+.RS 2
+.PP
+Uses a gaussian distribution centered on \f[I]sigma\f[].
+.RE
+.IP \[bu] 2
+\f[C]flat\f[] \f[I]min:float\f[] \f[I]max:float\f[]
+.RS 2
+.PP
+Uses a flat (uniform) distribution limited by \f[I]min\f[] and
+\f[I]max\f[] (included).
+.RE
+.IP \[bu] 2
+\f[C]exponential\f[] \f[I]mu\f[]
+.RS 2
+.PP
+Uses an exponential distribution having a mean of \f[I]mu\f[].
+.RE
+.IP \[bu] 2
+\f[C]pareto\f[] \f[I]a:float\f[] \f[I]b:float\f[]
+.RS 2
+.PP
+Uses a pareto distribution with order \f[I]a\f[] and minimum value
+\f[I]b\f[].
+.RE
+.SS analyse\-property
+.PP
+This module requires a graph as input.
+The \f[I]\-\-name\f[] option is used to select the property to analyse.
+.IP \[bu] 2
+\f[C]print\f[]
+.RS 2
+.PP
+Prints for each vertex/edge the property value.
+.RE
+.IP \[bu] 2
+\f[C]stats\f[]
+.RS 2
+.PP
+Prints the mean and stddev of the property.
+.RE
+.IP \[bu] 2
+\f[C]hist\f[] \f[I]nbins:int\f[] \f[I]min:float\f[] \f[I]max:float\f[]
+.RS 2
+.PP
+Prints an histogram (gsl_histogram like) using \f[I]nbins\f[] bins with
+a minimum value of \f[I]min\f[] and a maximum value of \f[I]max\f[].
+.RE
+.SH NOTES
+.PP
+The ggen command line client is designed so that you can pipe the graph
+outputs back into the analyser modules.
+.PP
+Two environment variables can be used to change the random number
+genetor used by ggen.
+They are defined and used by the underlying GNU Scientific library.
+Reading the [GSL Manual][] is recommended to understand their use.
+.IP \[bu] 2
+\f[C]GSL_RNG_SEED\f[]
+.RS 2
+.PP
+Changes the seed used to initialize the RNG.
+.RE
+.IP \[bu] 2
+\f[C]GSL_RNG_TYPE\f[]
+.RS 2
+.PP
+Changes the random number generator type.
+.RE
+.SH BUGS
+.PP
+No known bugs.
+Note that you can introduce bugs by yourself if you are playing with the
+seed, the type or the state file of the random number generator.
+These variables require carefull use and a deep understanding of their
+consequences.
+.PP
+Some of the classical bugs falsely reported:
+.IP \[bu] 2
+multiple instances of ggen generating the same graph:
+.RS 2
+.PP
+Either each instance read the same state file or the same seed was used
+(\f[C]time\f[] is a very bad seed, use \f[C]/dev/urandom\f[] instead).
+.RE
+.IP \[bu] 2
+generated graph are of bad quality
+.RS 2
+.PP
+First, some of these bugs can be real ones (if a graph generation does
+not seems to respect the spec, contact us).
+.PP
+But, maybe, you used the same state file for too long: each random
+number generator has a period.
+Generation methods roughly call the rng \f[I]n\f[] times.
+If you use the state file for too long you might bump against your rng
+period (if you are very unlucky this can have consequences on the
+generation quality).
+.PP
+Try to use a different state file in this case.
+.RE
+.IP \[bu] 2
+I get \f[I]strange results\f[] when simulating my algorithm against your
+graphs
+.RS 2
+.PP
+Congratulations ! You just bumped into the very problem we are trying to
+raise awareness of: comparing algorithms using badly chosen generation
+methods can lead to meaningless simulation results.
+.PP
+You should have a clear model of the kind of graph your application
+should take as input before selecting a generation method and its
+parameters.
+.PP
+You should also analyse the characteristics of your inputs graph to
+ensure they match your model.
+.RE
+.SH REPORTING BUGS
+.PP
+If you find any bug or have any comment on this library, contact the
+main developer directly: Swann Perarnau (swann.perarnau@imag.fr).
+.SH COPYRIGHT
+.PP
+Copyright (C) 2009\-2011 Swann Perarnau and others.
+License CeCILL: Open Source, GPL Compatible <http://www.cecill.info>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+.SH SEE ALSO
+.PP
+This tool was presented in a full article at the
+Simutools (http://www.simutools.org/2010/) Conference in March 2010.
+You can find a copy of this article on the GGen
+website (http://ggen.ligforge.imag.fr).
+.SH AUTHORS
+Swann Perarnau.

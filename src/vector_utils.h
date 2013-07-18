@@ -44,7 +44,7 @@
 #ifndef VECTOR_UTILS_H
 #define VECTOR_UTILS_H 1
 
-#include <igraph/igraph.h>
+#include <igraph.h>
 
 int vector_uniq_sorted(igraph_vector_t *v);
 

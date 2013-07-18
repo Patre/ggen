@@ -49,7 +49,6 @@
  * by Baruch Schieber and Uzi Vishkin (1988).
  */
 
-#include <igraph/igraph.h>
 #include "tree-lowest-common-ancestor.h"
 
 /* a few utility functions for repetitive actions in the other functions */

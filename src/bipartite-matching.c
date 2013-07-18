@@ -48,7 +48,7 @@
  * vcount/2 vertices are on the left, and the same number on the
  * right.
  */
-#include <igraph/igraph.h>
+#include <igraph.h>
 
 static int bfs(igraph_t *g, igraph_vector_t *pair, igraph_vector_t *layer)
 {

@@ -44,6 +44,9 @@
 
 #ifndef TREE_LOWEST_COMMON_ANCESTOR_H
 #define TREE_LOWEST_COMMON_ANCESTOR_H 1
+
+#include <igraph.h>
+
 typedef struct {
 	unsigned long key;
 	unsigned long value;

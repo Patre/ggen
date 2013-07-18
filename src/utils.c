@@ -33,7 +33,7 @@
 * knowledge of the CeCILL license and that you accept its terms.
 */
 #define GGEN_CGRAPH_DEFAULT_VALUE ""
-#include <graphviz/cgraph.h>
+#include <cgraph.h>
 #include <stdio.h>
 #include <string.h>
 

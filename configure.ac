@@ -39,10 +39,10 @@ if [[ "x$valgrind" = xtrue ]]; then
 fi
 AM_CONDITIONAL([TEST_VALGRIND],[test "x$valgrind" = xtrue])
 
-AC_PATH_PROG(PANDOC,pandoc,no)
-if [[ "x$PANDOC" = xno ]]; then
-	AC_MSG_ERROR([Pandoc not found in PATH. ])
-fi
+#AC_PATH_PROG(PANDOC,pandoc,no)
+#if [[ "x$PANDOC" = xno ]]; then
+#	AC_MSG_ERROR([Pandoc not found in PATH. ])
+#fi
 
 #check for GSL
 PKG_CHECK_MODULES([GSL],[gsl])
