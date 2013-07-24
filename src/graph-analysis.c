@@ -188,6 +188,7 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 	igraph_vit_t vit;
 	igraph_vs_t vs;
 	igraph_real_t value;
+	long int pos;
 
 	if(g == NULL)
 		return NULL;
@@ -296,6 +297,7 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 	err = igraph_vector_init(&next,vg);
 	if(err) goto d_todo;
 	igraph_vector_clear(&next);
+	
 	do {
 		vector_uniq(&todo);
 		added = 0;
@@ -323,9 +325,9 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 							igraph_es_destroy(&es);
 							goto d_next;
 						}
-						if(!igraph_vector_binsearch(&t,to,NULL))
+						if(!igraph_vector_binsearch(&t,to,&pos))
 						{
-							igraph_vector_push_back(&next,to);
+							igraph_vector_push_back(&next,to); igraph_vector_insert(&t, pos, to);
 							added = 1;
 						}
 					}
@@ -353,9 +355,9 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 							igraph_es_destroy(&es);
 							goto d_next;
 						}
-						if(!igraph_vector_binsearch(&t,to,NULL))
+						if(!igraph_vector_binsearch(&t,from,&pos))
 						{
-							igraph_vector_push_back(&next,from);
+							igraph_vector_push_back(&next,from); igraph_vector_insert(&t, pos, from);
 							added = 1;
 						}
 					}
@@ -364,7 +366,6 @@ igraph_vector_t * ggen_analyze_longest_antichain(igraph_t *g)
 			igraph_es_destroy(&es);
 			igraph_eit_destroy(&eit);
 		}
-		igraph_vector_append(&t,&todo);
 		igraph_vector_clear(&todo);
 		igraph_vector_append(&todo,&next);
 		igraph_vector_clear(&next);
